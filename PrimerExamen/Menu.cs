@@ -182,7 +182,7 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            var empleado_a_eliminar = listaEmpleados.FirstOrDefault(p => p.Cedula == cedula);
+            Empleado empleado_a_eliminar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
             if (empleado_a_eliminar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
