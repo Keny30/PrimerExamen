@@ -140,7 +140,7 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            var empleado_a_mostrar = listaEmpleados.FirstOrDefault(p => p.Cedula == cedula);
+            Empleado empleado_a_mostrar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
             if (empleado_a_mostrar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
@@ -159,7 +159,7 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            var empleado_a_editar = listaEmpleados.FirstOrDefault(p => p.Cedula == cedula);
+            Empleado empleado_a_editar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
             if (empleado_a_editar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
