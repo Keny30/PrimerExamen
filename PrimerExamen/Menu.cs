@@ -8,9 +8,9 @@ namespace PrimerExamen
 {
     internal class Menu
     {
-        
-     public static List<Empleado> listaEmpleados = new List<Empleado>();
 
+        public static Empleado[] arregloEmpleados = new Empleado[0];
+        public static Empleado[] points = new Empleado[] { };
         public static void EjecutarMenuPrincipal()
         {
             int opcion = 0;
@@ -118,21 +118,23 @@ namespace PrimerExamen
             Console.Write("Ingrese el salario: ");
             double salario = double.Parse(Console.ReadLine());
 
+            Array.Resize(ref arregloEmpleados, arregloEmpleados.Length + 1);
             Empleado empleado = new Empleado(cedula, nombre, direccion, telefono, salario);
-            listaEmpleados.Add(empleado);
+            arregloEmpleados[arregloEmpleados.Length - 1] = empleado;
+            
 
             Console.WriteLine("Empleado agregado con éxito.");
         }
         public static void ConsultarListaEmpleados()
         {
             Console.WriteLine("Lista de Empleados:");
-            foreach (var empleado in listaEmpleados.OrderBy(item => item.Nombre).ToList())
+            for (int i = 0; i < arregloEmpleados.Length; i++)
             {
-                Console.WriteLine($"Cédula: {empleado.Cedula}");
-                Console.WriteLine($"Nombre: {empleado.Nombre}");
-                Console.WriteLine($"Dirección: {empleado.Direccion}");
-                Console.WriteLine($"Teléfono: {empleado.Telefono}");
-                Console.WriteLine($"Salario: {empleado.Salario}");
+                Console.WriteLine($"Cédula: {arregloEmpleados[i].Cedula}");
+                Console.WriteLine($"Nombre: {arregloEmpleados[i].Nombre}");
+                Console.WriteLine($"Dirección: {arregloEmpleados[i].Direccion}");
+                Console.WriteLine($"Teléfono: {arregloEmpleados[i].Telefono}");
+                Console.WriteLine($"Salario: {arregloEmpleados[i].Salario}");
                 Console.WriteLine();
             }
         }
@@ -140,7 +142,8 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            Empleado empleado_a_mostrar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
+
+            Empleado empleado_a_mostrar = arregloEmpleados.FirstOrDefault(item => item.Cedula == cedula);
             if (empleado_a_mostrar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
@@ -159,7 +162,7 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            Empleado empleado_a_editar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
+            Empleado empleado_a_editar = Array.Find(arregloEmpleados, empleado => empleado.Cedula == cedula);
             if (empleado_a_editar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
@@ -182,14 +185,15 @@ namespace PrimerExamen
         {
             Console.Write("Ingrese la cédula: ");
             string cedula = Console.ReadLine();
-            Empleado empleado_a_eliminar = listaEmpleados.FirstOrDefault(empleado => empleado.Cedula == cedula);
+            Empleado empleado_a_eliminar = Array.Find(arregloEmpleados, empleado => empleado.Cedula == cedula);
             if (empleado_a_eliminar == null)
             {
                 Console.WriteLine("El empleado no esta registrado");
             }
             else
             {
-                listaEmpleados = listaEmpleados.Where(item => item.Cedula != cedula).ToList();
+                int indiceEmpleado = Array.FindIndex(arregloEmpleados, empleados => empleados.Cedula == empleado_a_eliminar.Cedula);
+                arregloEmpleados = arregloEmpleados.Where((empleado, indice) => indice != indiceEmpleado).ToArray();
                 Console.WriteLine("Empleado eliminado con éxito.");
             }
         }
@@ -199,26 +203,34 @@ namespace PrimerExamen
         }
         public static void InicializarArreglos()
         {
-            listaEmpleados = new List<Empleado>();
+            arregloEmpleados = new Empleado[] { };
             Console.WriteLine("Lista de empleados limpiada exitosamente.");
         }
         public static void CalcularPromedioSalarios()
         {
 
-            double promedioSalarios = listaEmpleados.Average(item => item.Salario);
+            double sum = 0.0;
+            int count = arregloEmpleados.Length;
+            for (int i = 0; i < arregloEmpleados.Length; i++)
+            {
+                sum += arregloEmpleados[i].Salario;
+            }
+            double promedioSalarios = sum / count;
+
             Console.WriteLine($"El promedio de los salarios registrados es: {promedioSalarios}");
         }
         public static void Calcular_SalarioMenor_SalarioMayor()
         {
-            double salarioMenor = listaEmpleados.Min(item => item.Salario);
-            double salarioMayor = listaEmpleados.Max(item => item.Salario);
-            Console.WriteLine($"El salario menor registrado es: {salarioMenor}");
-            Console.WriteLine($"El salario mayor registrado es: {salarioMayor}");
+            Empleado salarioMenor = arregloEmpleados.OrderBy(empleado => empleado.Salario).First();
+            Empleado salarioMayor = arregloEmpleados.OrderByDescending(empleado => empleado.Salario).First();
+
+            Console.WriteLine($"El empleado con el salario menor registrado es {salarioMenor.Nombre} , su salario es: {salarioMenor.Salario}");
+            Console.WriteLine($"El empleado con el salario mayor registrado es {salarioMayor.Nombre} , su salario es: {salarioMayor.Salario}");
         }
 
     }
 }
 
-    
-    
+
+
 
